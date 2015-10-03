@@ -10,7 +10,6 @@ public class Spaceship {
 	}
 
 	static float SPEED = 2f;	// unit per second
-	static float JUMP_VELOCITY = 1f;
 	static final float SIZE = 0.5f; // half a unit
 
 	Vector2 	position = new Vector2();

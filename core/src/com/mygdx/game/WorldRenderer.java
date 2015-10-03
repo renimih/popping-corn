@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public class WorldRenderer {
 	private static final float CAMERA_WIDTH = 10f;
@@ -58,7 +59,7 @@ public class WorldRenderer {
 		
 //		spriteBatch.setProjectionMatrix(cam.combined);	
 //		this.cam.update();	
-		
+		meteors.add(new Meteor(new Vector2(20,20),100,0,0));
 		loadTextures();
 	}
 
@@ -117,9 +118,10 @@ public class WorldRenderer {
        	spaceSprite.translateX(-vx);
         spaceSprite.translateY(vy);
         
-        
+        crashDetection();
 		spriteBatch.begin();
 		drawSpace();
+		drawMeteors();
 		
 		spriteBatch.end();
 		if (debug)
@@ -130,6 +132,23 @@ public class WorldRenderer {
 	private void drawMeteors(){
 		for(Meteor m: meteors){
 			m.draw(spriteBatch);
+		}
+	}
+	//FIXIT
+	private void crashDetection(){
+		float mSize;
+		Vector2 mV;
+		float sY = spaceSprite.getX();
+		float sX = spaceSprite.getY();
+		for(Meteor m: meteors){
+			mSize = m.getSize();
+			mV = m.getPosition();
+			if(Math.sqrt((sY - mV.y)*(sY - mV.y) + (sX - mV.x)*(sX - mV.x))< 20){
+				Gdx.app.log("Distance1!", Math.sqrt((sY - mV.y)*(sY - mV.y) + (sX - mV.x)*(sX - mV.x))+ "");
+				Gdx.app.log("ship", spaceSprite.getX() + "");
+
+			}
+			
 		}
 	}
 	

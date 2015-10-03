@@ -11,17 +11,20 @@ public class Meteor {
 
 	float size;
 	private Sprite mSprite;
-	float velocity;
+	float vX,vY;
 
 	Vector2 position = new Vector2();
 	Circle	bounds = new Circle();
 
-	public Meteor(Vector2 pos, float size,float velocity) {
+	public Meteor(Vector2 pos, float size,float vX, float vY) {
 		this.position = pos;
 		this.bounds.setRadius(size/2);
 		this.size = size;
-		this.velocity = velocity;
-		mSprite  = new Sprite(new  Texture(Gdx.files.internal("8bitplane.png")));
+		this.vX = vX;
+		this.vY = vY;
+	     
+		mSprite  = new Sprite(new  Texture(Gdx.files.internal("asteroid-cookie.png")));
+		//mSprite.setOrigin(bounds.radius, bounds.radius);
 	}
 
 	public float getSize() {
@@ -45,8 +48,13 @@ public class Meteor {
 	}
 	
 	public void draw(SpriteBatch batch){
-		
+		this.position.x += this.vX;
+		this.position.y += this.vY;
 		mSprite.draw(batch);
+		mSprite.translate(this.vX, this.vY);
+		mSprite.rotate(5);
+		//batch.draw(mSprite, position.x, position.y, bounds.radius, bounds.radius);
+		
 	}
 	
 	
