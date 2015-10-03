@@ -6,12 +6,12 @@ import com.badlogic.gdx.utils.Array;
 public class World {
 	
 	/** The blocks making up the world **/
-	Array<Popcorn> popcorns = new Array<Popcorn>();
+	Array<Meteor> popcorns = new Array<Meteor>();
 	/** Our player controlled hero **/
 	Spaceship spaceship;
 
 	// Getters -----------
-	public Array<Popcorn> getPopcorns() {
+	public Array<Meteor> getPopcorns() {
 		return popcorns;
 	}
 	public Spaceship getSpaceship() {

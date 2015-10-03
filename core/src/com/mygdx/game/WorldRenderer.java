@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -21,6 +23,7 @@ public class WorldRenderer {
 
 	
 	/** Textures **/
+	
 	private Texture spaceTexture;
 	private Texture popcornTexture;
 	private Sprite spaceSprite;
@@ -34,6 +37,7 @@ public class WorldRenderer {
 	private int spaceVelx;
 	private int spaceVely;
 	private float vx=0, vy=0;
+	private ArrayList <Meteor> meteors = new ArrayList<Meteor>();
 	
 	public void setSize (int w, int h) {
 		this.width = w;
@@ -121,6 +125,12 @@ public class WorldRenderer {
 		if (debug)
 			drawDebug();
 		
+	}
+	
+	private void drawMeteors(){
+		for(Meteor m: meteors){
+			m.draw(spriteBatch);
+		}
 	}
 	
 	private void drawSpace() {
