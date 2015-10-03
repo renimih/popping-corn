@@ -34,6 +34,9 @@ public class WorldRenderer {
 	private float accX;
 	private int spaceVelx;
 	private int spaceVely;
+	float e = 0;
+	float eX = 0;
+	float eY = 0;
 	
 	public void setSize (int w, int h) {
 		this.width = w;
@@ -66,46 +69,57 @@ public class WorldRenderer {
 	public void render() {
 		// render blocks
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){			
-			if (spaceSprite.getX() <= -spaceSprite.getWidth()) {
-        		spaceSprite.setPosition(Gdx.graphics.getWidth(), spaceSprite.getY());
-        	}
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+			spaceSprite.rotate(4.0f);
+//			System.out.println(spaceSprite.getRotation());
+			
             if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)){
             	spaceSprite.translateX(-1f);
             	
             }
-            else {
-            	spaceSprite.translateX(-10.0f);
-            }
+//            else {
+//            	spaceSprite.translateX(-1.0f);
+//            }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-        	if (spaceSprite.getX() >= Gdx.graphics.getWidth()) {
-        		spaceSprite.setPosition(-spaceSprite.getWidth(), spaceSprite.getY());
-        	}
-            if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
+        	spaceSprite.rotate(-4.0f);
+        	
+            if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             	spaceSprite.translateX(1f);
-            else
-            	spaceSprite.translateX(10.0f);
+            }
+            	
+//            else
+//            	spaceSprite.translateX(10.0f);
         }
         
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-        	if (spaceSprite.getY() <= -spaceSprite.getHeight()) {
-        		spaceSprite.setPosition(spaceSprite.getX(), Gdx.graphics.getHeight());
-        	}
-            if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
-            	spaceSprite.translateY(-1f);
-            else
-            	spaceSprite.translateY(-10.0f);
-        }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+        	if (e < 10) e+=0.3;
+        	if (eX < 10 ) eX+= -0.15 * (float) Math.sin(Math.toRadians(spaceSprite.getRotation()));
+        	if (eY < 10 ) eY+= 0.15 * (float) Math.cos(Math.toRadians(spaceSprite.getRotation()));
+        	System.out.println(e);
         	if (spaceSprite.getY() >= Gdx.graphics.getHeight()) {
         		spaceSprite.setPosition(spaceSprite.getX(), -spaceSprite.getHeight());
         	}
-            if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
-            	spaceSprite.translateY(1f);
-            else
-            	spaceSprite.translateY(10.0f);
+        	else if (spaceSprite.getY() <= -spaceSprite.getHeight()) {
+        		spaceSprite.setPosition(spaceSprite.getX(), Gdx.graphics.getHeight());
+        	}
+        	if (spaceSprite.getX() <= -spaceSprite.getWidth()) {
+        		spaceSprite.setPosition(Gdx.graphics.getWidth(), spaceSprite.getY());
+        	}
+        	else if (spaceSprite.getX() >= Gdx.graphics.getWidth()) {
+        		spaceSprite.setPosition(-spaceSprite.getWidth(), spaceSprite.getY());
+        	}
+            	spaceSprite.translateX((float) Math.sin(Math.toRadians(spaceSprite.getRotation()))*-e);
+            	spaceSprite.translateY((float) Math.cos(Math.toRadians(spaceSprite.getRotation()))*e);
         }
+        else if(e > 0) {
+        	e-=0.25;
+        	if (eX > 0 ) eX*=0.5;
+        	if (eY > 0 ) eX*=0.5;
+        	spaceSprite.translateX((float) Math.sin(Math.toRadians(spaceSprite.getRotation()))*-e + eX);
+        	spaceSprite.translateY((float) Math.cos(Math.toRadians(spaceSprite.getRotation()))*e + eY);
+        }
+        System.out.println(e);
 		spriteBatch.begin();
 		drawSpace();
 		
