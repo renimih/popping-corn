@@ -31,5 +31,7 @@ public class FuelTank {
 		this.bounds.width = SIZE;
 		this.bounds.height = SIZE;
 	}
+	
+	
 
 }
