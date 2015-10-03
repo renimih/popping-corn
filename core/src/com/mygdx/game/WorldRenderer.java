@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 public class WorldRenderer {
 	private static final float CAMERA_WIDTH = 10f;
@@ -34,9 +33,7 @@ public class WorldRenderer {
 	private float accX;
 	private int spaceVelx;
 	private int spaceVely;
-	float e = 0;
-	float eX = 0;
-	float eY = 0;
+	private float vx=0, vy=0;
 	
 	public void setSize (int w, int h) {
 		this.width = w;
@@ -68,6 +65,8 @@ public class WorldRenderer {
 
 	public void render() {
 		// render blocks
+		vx*=0.99;
+		vy*=0.99;
 		
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 			spaceSprite.rotate(4.0f);
@@ -93,33 +92,28 @@ public class WorldRenderer {
         }
         
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-        	if (e < 10) e+=0.3;
-        	if (eX < 10 ) eX+= -0.15 * (float) Math.sin(Math.toRadians(spaceSprite.getRotation()));
-        	if (eY < 10 ) eY+= 0.15 * (float) Math.cos(Math.toRadians(spaceSprite.getRotation()));
-        	System.out.println(e);
-        	if (spaceSprite.getY() >= Gdx.graphics.getHeight()) {
-        		spaceSprite.setPosition(spaceSprite.getX(), -spaceSprite.getHeight());
-        	}
-        	else if (spaceSprite.getY() <= -spaceSprite.getHeight()) {
-        		spaceSprite.setPosition(spaceSprite.getX(), Gdx.graphics.getHeight());
-        	}
-        	if (spaceSprite.getX() <= -spaceSprite.getWidth()) {
-        		spaceSprite.setPosition(Gdx.graphics.getWidth(), spaceSprite.getY());
-        	}
-        	else if (spaceSprite.getX() >= Gdx.graphics.getWidth()) {
-        		spaceSprite.setPosition(-spaceSprite.getWidth(), spaceSprite.getY());
-        	}
-            	spaceSprite.translateX((float) Math.sin(Math.toRadians(spaceSprite.getRotation()))*-e);
-            	spaceSprite.translateY((float) Math.cos(Math.toRadians(spaceSprite.getRotation()))*e);
+        	
+        	
+            vx += (float) Math.sin(Math.toRadians(spaceSprite.getRotation()))*0.3;
+            vy += (float) Math.cos(Math.toRadians(spaceSprite.getRotation()))*0.3;
         }
-        else if(e > 0) {
-        	e-=0.25;
-        	if (eX > 0 ) eX*=0.5;
-        	if (eY > 0 ) eX*=0.5;
-        	spaceSprite.translateX((float) Math.sin(Math.toRadians(spaceSprite.getRotation()))*-e + eX);
-        	spaceSprite.translateY((float) Math.cos(Math.toRadians(spaceSprite.getRotation()))*e + eY);
-        }
-        System.out.println(e);
+        if (spaceSprite.getY() >= Gdx.graphics.getHeight()) {
+    		spaceSprite.setPosition(spaceSprite.getX(), -spaceSprite.getHeight());
+    	}
+    	else if (spaceSprite.getY() <= -spaceSprite.getHeight()) {
+    		spaceSprite.setPosition(spaceSprite.getX(), Gdx.graphics.getHeight());
+    	}
+    	if (spaceSprite.getX() <= -spaceSprite.getWidth()) {
+    		spaceSprite.setPosition(Gdx.graphics.getWidth(), spaceSprite.getY());
+    	}
+    	else if (spaceSprite.getX() >= Gdx.graphics.getWidth()) {
+    		spaceSprite.setPosition(-spaceSprite.getWidth(), spaceSprite.getY());
+    	}
+        
+       	spaceSprite.translateX(-vx);
+        spaceSprite.translateY(vy);
+        
+        
 		spriteBatch.begin();
 		drawSpace();
 		
