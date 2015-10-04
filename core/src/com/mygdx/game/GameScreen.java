@@ -1,8 +1,5 @@
 package com.mygdx.game;
 
-import com.mygdx.game.World;
-import com.mygdx.game.WorldRenderer;
-
 import org.lwjgl.opengl.GL11;
 
 import com.badlogic.gdx.Gdx;
@@ -10,13 +7,12 @@ import com.badlogic.gdx.Screen;
 
 public class GameScreen implements Screen {
 
-	private World world;
+
 	private WorldRenderer renderer;
 	
 	@Override
 	public void show() {
-		world = new World();
-		renderer = new WorldRenderer(world, false);
+		renderer = new WorldRenderer(true);
 	}
 
 	@Override

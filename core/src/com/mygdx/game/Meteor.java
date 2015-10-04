@@ -19,11 +19,16 @@ public class Meteor {
 	public Meteor(Vector2 pos, float size,float vX, float vY) {
 		this.position = pos;
 		this.bounds.setRadius(size/2);
+		this.bounds.setPosition(position);
 		this.size = size;
 		this.vX = vX;
 		this.vY = vY;
 	     
 		mSprite  = new Sprite(new  Texture(Gdx.files.internal("asteroid-cookie.png")));
+		mSprite.setSize(size, size);
+		mSprite.setOrigin(size/2, size/2);
+		mSprite.scale(0.35f);
+		
 		//mSprite.setOrigin(bounds.radius, bounds.radius);
 	}
 
@@ -50,9 +55,13 @@ public class Meteor {
 	public void draw(SpriteBatch batch){
 		this.position.x += this.vX;
 		this.position.y += this.vY;
+		mSprite.setPosition(position.x-size/2, position.y-size/2);
+		this.bounds.setPosition(position);
 		mSprite.draw(batch);
-		mSprite.translate(this.vX, this.vY);
-		mSprite.rotate(5);
+		
+		
+		//mSprite.rotate(5);
+		//Gdx.app.log("meteor", this.position.x +"");
 		//batch.draw(mSprite, position.x, position.y, bounds.radius, bounds.radius);
 		
 	}
