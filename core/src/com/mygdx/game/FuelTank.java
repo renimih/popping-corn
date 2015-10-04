@@ -17,6 +17,8 @@ public class FuelTank {
 	static final float SIZE = 1f;
 	static final ArrayList<Sprite> pics = new ArrayList<Sprite>();
 	public int time;
+	private int x;
+	private int y;
 
 //	Vector2 	position = new Vector2();
 	Rectangle 	bounds = new Rectangle();
@@ -34,6 +36,8 @@ public class FuelTank {
 	}
 
 	public FuelTank() {
+		x = (int)Math.random()*800;
+		y = (int) Math.random()*600;
 		this.bounds.width = SIZE;
 		this.bounds.height = SIZE;
 //		updatePic(5);
@@ -55,7 +59,7 @@ public class FuelTank {
 //	}
 
 
-	public void draw(int count, int x, int y, SpriteBatch batch) {
+	public void draw(SpriteBatch batch) {
 		ftSprite.setPosition(x, y);
 		this.bounds.setPosition(new Vector2(x,y));
 		ftSprite.draw(batch);

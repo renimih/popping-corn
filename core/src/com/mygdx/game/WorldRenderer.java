@@ -98,7 +98,7 @@ public class WorldRenderer {
 		spriteBatch.begin();
 		spaceShip.draw(spriteBatch);
 		drawMeteors();	
-//		drawFt(fuelTank);
+		drawFt();
 		spriteBatch.end();
 		
 //		drawFt(fuelTank, ftBatch);
@@ -107,11 +107,11 @@ public class WorldRenderer {
 
 	}
 	
-	private void drawFt(FuelTank fueltank){
-		int x = (int)Math.random()*800;
-		int y = (int) Math.random()*600;
+	private void drawFt(){
 	
-		fueltank.draw(5, x, y, spriteBatch);
+		for (FuelTank ft : tanks) {
+			ft.draw(spriteBatch);
+		}
 	
 	}
 	
