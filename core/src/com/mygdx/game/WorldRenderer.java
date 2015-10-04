@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -26,6 +28,7 @@ public class WorldRenderer {
 	private Texture spaceTexture;
 	private Texture popcornTexture;
 	private SpriteBatch spriteBatch;
+	private SpriteBatch ftBatch;
 	private boolean debug = false;
 	private int width;
 	private int height;
@@ -36,6 +39,7 @@ public class WorldRenderer {
 	private int spaceVely;
 	private Spaceship spaceShip = new Spaceship(new Vector2(7, 2));
 	private ArrayList<Meteor> meteors = new ArrayList<Meteor>();
+	private ArrayList<FuelTank> tanks = new ArrayList<FuelTank>();
 
 	public void setSize(int w, int h) {
 		this.width = w;
@@ -50,6 +54,7 @@ public class WorldRenderer {
 		this.cam.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
 		this.debug = debug;
 		spriteBatch = new SpriteBatch();
+		ftBatch = new SpriteBatch();
 
 		this.spaceVelx = 0;
 		this.spaceVely = 0;
@@ -58,7 +63,29 @@ public class WorldRenderer {
 		// this.cam.update();
 		meteors.add(new Meteor(new Vector2(100, 100), 100, 0, 0));
 		loadTextures();
-	}
+		
+		class RemindTask extends TimerTask {
+		
+		private Timer timer;
+
+		RemindTask(Timer timer){
+			this.timer = timer;
+		}
+	    public void run() {
+			for (FuelTank ft : tanks) {
+				ft.countdown();
+				if (ft.time == 0) {
+					tanks.remove(ft);
+				}
+			}
+//	      timer.cancel();
+//	      System.exit(0); //Stops the AWT thread (and everything else)
+	    }
+	  }
+	
+			Timer timer = new Timer();
+			timer.scheduleAtFixedRate(new RemindTask(timer), 2000, 10000);
+		}
 
 	private void loadTextures() {
 
@@ -70,13 +97,24 @@ public class WorldRenderer {
 		checkCollision();
 		spriteBatch.begin();
 		spaceShip.draw(spriteBatch);
-		drawMeteors();
-
+		drawMeteors();	
+//		drawFt(fuelTank);
 		spriteBatch.end();
+		
+//		drawFt(fuelTank, ftBatch);
 		if (debug)
 			drawDebug();
 
 	}
+	
+	private void drawFt(FuelTank fueltank){
+		int x = (int)Math.random()*800;
+		int y = (int) Math.random()*600;
+	
+		fueltank.draw(5, x, y, spriteBatch);
+	
+	}
+	
 
 	private void drawMeteors() {
 		for (Meteor m : meteors) {
