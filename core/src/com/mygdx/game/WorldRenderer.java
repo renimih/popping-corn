@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
+
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -34,6 +36,7 @@ public class WorldRenderer {
 	private Texture popcornTexture;
 	private SpriteBatch spriteBatch;
 	private SpriteBatch hudBatch;
+	private SpriteBatch ftBatch;
 	private boolean debug = false;
 	private int width;
 	private int height;
@@ -45,6 +48,7 @@ public class WorldRenderer {
 	private int spaceVely;
 	private Spaceship spaceShip = new Spaceship(new Vector2(7, 2));
 	private ArrayList<Meteor> meteors = new ArrayList<Meteor>();
+	private ArrayList<FuelTank> tanks = new ArrayList<FuelTank>();
 
 	public void setSize(int w, int h) {
 		this.width = w;
@@ -64,6 +68,8 @@ public class WorldRenderer {
 		font.setColor(Color.GREEN);
 		fuel = 100;
 		score = 0;
+		ftBatch = new SpriteBatch();
+
 		this.spaceVelx = 0;
 		this.spaceVely = 0;
 
@@ -73,13 +79,26 @@ public class WorldRenderer {
 				score += 1;
 			}
 		}, 1 // (delay)
-				, 1 // (seconds)
+		, 1 // (seconds)
 		);
 		// spriteBatch.setProjectionMatrix(cam.combined);
 		// this.cam.update();
 		meteors.add(new Meteor(new Vector2(250, 250), 100, 0, 0));
 		loadTextures();
-	}
+		Timer.schedule(new Task() {
+			@Override
+			public void run(){
+				for (FuelTank ft : tanks) {
+					ft.countdown();
+					if (ft.time == 0) {
+						tanks.remove(ft);
+					}
+				}
+			}
+		}, 1,1);
+	
+			//Timer timer = new Timer();
+		}
 
 	private void loadTextures() {
 
@@ -92,8 +111,12 @@ public class WorldRenderer {
 		fuelTake();
 		spriteBatch.begin();
 		spaceShip.draw(spriteBatch);
+
 		drawMeteors();
+//		drawFt(fuelTank);
 		spriteBatch.end();
+		
+//		drawFt(fuelTank, ftBatch);
 		if (debug)
 			drawDebug();
 
@@ -115,6 +138,15 @@ public class WorldRenderer {
 			game.setScreen(new endScreen(this.game));
 		}
 	}
+	
+	private void drawFt(FuelTank fueltank){
+		int x = (int)Math.random()*800;
+		int y = (int) Math.random()*600;
+	
+		fueltank.draw(5, x, y, spriteBatch);
+	
+	}
+	
 
 	private void drawMeteors() {
 		for (Meteor m : meteors) {
